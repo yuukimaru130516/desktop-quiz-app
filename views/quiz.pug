@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  h2 クイズ部分
+  a(href="/quiz?rank=" + rank)#root 更新 <br>
+  
+  a(href="/") トップに戻る
+
+  //- TODO 一問づつ表示する
+  hr
+  p #{randoms[0].Content.Question}
+  p 正答率： #{randoms[0].Correct_rate} %
+  hr
+  button#ans 答えを見る
+  p#quiz_question #{randoms[0].Content.Answer}
+  
+    
+        
