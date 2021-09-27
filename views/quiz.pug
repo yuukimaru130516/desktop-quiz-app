@@ -6,13 +6,22 @@ block content
   
   a(href="/") トップに戻る
 
-  //- TODO 一問づつ表示する
-  hr
-  p #{randoms[0].Content.Question}
-  p 正答率： #{randoms[0].Correct_rate} %
-  hr
-  button#ans 答えを見る
-  p#quiz_question #{randoms[0].Content.Answer}
-  
+  //- TODO 一問ずつゆっくり表示する
+  //- TODO クリックするたびに、number=[1,2,3,4,5]を一つずつ動かす
+  each random, index in randoms
+    if(index == number)
+      hr
+      - const ques = random.Content.Question
+      p#ques #{ques}
+      #quiz-area
+        .quiz 問題：
+    
+      p#cor 正答率： #{random.Correct_rate} %
+      hr
+
+      button#ans 答えを見る
+      p#quiz_question #{random.Content.Answer}
+
+
     
         

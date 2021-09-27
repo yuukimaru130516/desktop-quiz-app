@@ -12,12 +12,15 @@ const quiz = JSON.parse(fs.readFileSync(quiz_file, 'utf8'));
 router.get('/', function(req, res, next) {
 
   // TODO モジュール分割
-  // 問題数の最小値と最大値
+  // 問題数の最大値
+  const max = 5;
   const randoms = [];
-  const max = 1;
 
   // 難易度選択
   const rank = req.query.rank;
+
+  // 何問目か選択
+  let number = 0;
 
   function intRandom(length){
     return Math.floor(Math.random() * length) + 1;
@@ -37,7 +40,10 @@ router.get('/', function(req, res, next) {
     }
   }
   createQuiz(rank);
-  res.render('quiz', {randoms, rank});
+  // const random = randoms[0];
+  number ++;
+  console.log(number);
+  res.render('quiz', {randoms, rank, number});
 });
 
 module.exports = router;

@@ -99,15 +99,46 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-var num = 0; // TODO トップ画面
+ // TODO トップ画面
 
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
   jquery__WEBPACK_IMPORTED_MODULE_0___default()("#quiz_question").hide();
   jquery__WEBPACK_IMPORTED_MODULE_0___default()('#ans').on('click', function () {
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("#quiz_question").show(100);
   });
-});
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#ques").hide();
+  var stdQuiz = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#ques").text(); // 出題
+
+  syutudai(stdQuiz);
+}); // 出題部分
+
+var syutudai = function syutudai(stdQuiz) {
+  return new Promise(function (resolve) {
+    var content = [];
+    var counter = 0;
+
+    for (var i in stdQuiz) {
+      content.push(stdQuiz[i]);
+    }
+
+    var str_output = function str_output() {
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()("<div>", {
+        class: 'quiz',
+        text: content[counter]
+      }).appendTo('#quiz-area');
+      counter++;
+    };
+
+    var intervalId = setInterval(function () {
+      str_output();
+
+      if (counter === content.length) {
+        clearInterval(intervalId);
+        resolve();
+      }
+    }, 100);
+  });
+};
 
 /***/ }),
 /* 1 */
