@@ -6,4 +6,9 @@ router.get('/', function(req, res, next) {
   res.render('index');
 });
 
+router.get('/quiz', function(req, res, next) {
+  const rank = req.query.rank
+  res.render('quiz', {rank});
+})
+
 module.exports = router;

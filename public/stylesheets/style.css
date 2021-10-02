@@ -7,10 +7,17 @@ a {
   color: #00B7FF;
 }
 
-.quiz {
-  float: left;
+#top{
+  float: right;
 }
 
-#cor {
-  clear: left;
+.card-columns{
+  columns: 4;
+  height: 222px;
+}
+
+.card{
+  height: 222px;
+  line-height: 222px;
+  cursor: pointer;
 }

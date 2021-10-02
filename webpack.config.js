@@ -1,9 +1,15 @@
 module.exports = {
     context: __dirname + '/app',
-    entry: './entry',
+    entry: ['@babel/polyfill', './entry.js'],
     output: {
       path: __dirname + '/public/javascripts',
       filename: 'bundle.js'
+    },
+    devServer: {
+      contentBase:  __dirname + '/app',
+      compress: true,
+      port: 8000,
+      open: true
     },
     mode: 'none',
     target: 'node',

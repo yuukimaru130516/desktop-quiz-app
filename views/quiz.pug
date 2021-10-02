@@ -1,27 +1,22 @@
 extends layout
 
 block content
-  h2 クイズ部分
-  a(href="/quiz?rank=" + rank)#root 更新 <br>
-  
-  a(href="/") トップに戻る
-
+  h2 クイズ部分  
+  a(href="/")#top トップに戻る
   //- TODO 一問ずつゆっくり表示する
-  //- TODO クリックするたびに、number=[1,2,3,4,5]を一つずつ動かす
-  each random, index in randoms
-    if(index == number)
-      hr
-      - const ques = random.Content.Question
-      p#ques #{ques}
-      #quiz-area
-        .quiz 問題：
-    
-      p#cor 正答率： #{random.Correct_rate} %
-      hr
+  
+  //- TODO クリックするたびに、numbers=[1,2,3,4,5]を一つずつ動かす
 
-      button#ans 答えを見る
-      p#quiz_question #{random.Content.Answer}
+  //- pug が持っている変数 → randoms, rank, numbers
+  //- 基本はentry.jsで動かす → pugはあくまで表示するだけ
 
-
-    
-        
+  //- entry.jsから持ってくる変数
+  p#rank #{rank}
+  h2 #{rank} ランク
+  p#quiz-area
+   
+  button#next-quiz 次の問題
+  button#ans-btn ストップ 
+  #ans-area.card-columns
+  //- TODO randomsのindexを変えたい
+  
