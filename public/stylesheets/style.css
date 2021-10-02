@@ -19,5 +19,12 @@ a {
 .card{
   height: 222px;
   line-height: 222px;
+  font-size: xx-large;
   cursor: pointer;
+}
+
+#countdown-bar {
+  width: 100%;
+  background-color: orange;
+  height: 16px;
 }

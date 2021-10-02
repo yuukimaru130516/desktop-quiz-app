@@ -1,0 +1,7 @@
+{
+  "name": "desktop-quiz-app",
+  "description": "クイズアプリ",
+  "logo": "",
+  "keywords": ["node"],
+  "image": "heroku/nodejs"
+}

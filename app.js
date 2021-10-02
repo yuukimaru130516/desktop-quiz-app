@@ -6,7 +6,6 @@ var logger = require('morgan');
 const helmet = require('helmet');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 const quizAPIRouter = require('./routes/quiz-api');
 
 var app = express();
@@ -23,7 +22,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/quiz-api', quizAPIRouter); //API
 
 

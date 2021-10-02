@@ -3,20 +3,12 @@ extends layout
 block content
   h2 クイズ部分  
   a(href="/")#top トップに戻る
-  //- TODO 一問ずつゆっくり表示する
-  
-  //- TODO クリックするたびに、numbers=[1,2,3,4,5]を一つずつ動かす
-
-  //- pug が持っている変数 → randoms, rank, numbers
-  //- 基本はentry.jsで動かす → pugはあくまで表示するだけ
-
-  //- entry.jsから持ってくる変数
-  p#rank #{rank}
-  h2 #{rank} ランク
+  h2#rank(data-rank=rank) #{rank} ランクが選択されています
+  h4#Q.text-center
+  #countdown-bar
   p#quiz-area
+
    
-  button#next-quiz 次の問題
-  button#ans-btn ストップ 
+  button#ans-btn 答える！
   #ans-area.card-columns
-  //- TODO randomsのindexを変えたい
   
