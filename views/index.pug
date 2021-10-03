@@ -4,11 +4,28 @@ block content
   p 最大4人までオンライン対戦可能なクイズアプリです
   p 現在、約2万問収録しています
 
-  #select-degree.container
-    h4 難易度選択
-    div.card-columns
-      .card#easy かんたん
-      .card#easy ふつう
-      .card#easy ちょいむず
-      .card#easy むずかしい
+  p#select-ques-number 問題数選択
+  select.form-select#select(aria-label="問題数を選択する", onchange="getValue()")
+    option(value="0") 問題数を選択する
+    option(value="5") 5
+    option(value="10") 10
+    option(value="30") 30
+    option(value="100") 100
+  
+  script
+      |function getValue(){
+      |  const max = document.getElementById("select").value
+      |  console.log(max)
+      |  }
+
+  #select-degree.py-3
+    h4.py-2 難易度選択
+    a(href="/quiz?rank=A&max=" + max).btn.btn-border 
+      span#easy easy
+    a(href="/quiz?rank=B").btn.btn-border 
+      span#easy normal
+    a(href="/quiz?rank=C").btn.btn-border  
+      span#easy difficult 
+    a(href="/quiz?rank=D").btn.btn-border 
+      span#easy hard
   

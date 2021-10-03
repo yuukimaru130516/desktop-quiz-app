@@ -8775,7 +8775,16 @@ var Questions = {
   "B": [],
   "C": [],
   "D": []
-}; // suffle メソッド
+};
+var max = 0; // 問題数選択されてから難易度を表示する
+
+jquery__WEBPACK_IMPORTED_MODULE_0___default()("#select-degree").hide();
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(".form-select").change(function () {
+  // 問題数取得
+  max = jquery__WEBPACK_IMPORTED_MODULE_0___default()("option:selected").val();
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#select-degree").show();
+});
+console.log(max); // suffle メソッド
 
 Array.prototype.shuffle = function () {
   this.sort(function () {
@@ -8784,9 +8793,7 @@ Array.prototype.shuffle = function () {
 }; // 難易度取得
 
 
-var rank = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#rank").data('rank'); // 問題数選択
-
-var max = 5; // 持ち時間(ミリ秒)
+var rank = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#rank").data('rank'); // 持ち時間(ミリ秒)
 
 var time = 5000; // クイズ取得
 
@@ -8970,38 +8977,38 @@ var syutudai = function syutudai() {
               str_output();
 
               if (!(counter === content.length)) {
-                _context.next = 5;
+                _context.next = 6;
                 break;
               }
 
-              // TODO 待ち時間のバーを表示する
+              clearInterval(intervalId); // TODO 待ち時間のバーを表示する
+
               jquery__WEBPACK_IMPORTED_MODULE_0___default()("#countdown-bar").animate({
                 width: "0%"
               }, time, function () {
                 jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).css({
                   width: "100%"
                 });
-                clearInterval(intervalId);
                 resolve();
               });
-              _context.next = 10;
+              _context.next = 11;
               break;
 
-            case 5:
+            case 6:
               if (!stop) {
-                _context.next = 10;
+                _context.next = 11;
                 break;
               }
 
               clearInterval(intervalId); //TODO 回答処理、正答処理
 
-              _context.next = 9;
+              _context.next = 10;
               return toAnswer();
 
-            case 9:
+            case 10:
               resolve();
 
-            case 10:
+            case 11:
             case "end":
               return _context.stop();
           }

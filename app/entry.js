@@ -19,6 +19,17 @@ const Questions = {
   "D": []
 }
 
+let max = 0;
+
+// 問題数選択されてから難易度を表示する
+$("#select-degree").hide();
+$(".form-select").change(function() {
+  // 問題数取得
+  max = $("option:selected").val();
+  $("#select-degree").show();
+})
+
+console.log(max);
 // suffle メソッド
 Array.prototype.shuffle = function() {
   this.sort(() => Math.random() - 0.5);
@@ -26,9 +37,6 @@ Array.prototype.shuffle = function() {
 
 // 難易度取得
 const rank = $("#rank").data('rank');
-
-// 問題数選択
-const max = 10;
 
 // 持ち時間(ミリ秒)
 const time = 5000;
