@@ -3,10 +3,6 @@ body {
   height: 100%
 }
 
-a {
-  color: #00B7FF;
-}
-
 header {
   width: 100%;
   padding-top: 1rem;
@@ -16,7 +12,10 @@ header {
 #home {
   color: whitesmoke;
   cursor: pointer;
+  margin-left: 5rem;
+  margin-top: 1.5rem;
 }
+
 
 header h1 {
   text-align: center;
@@ -25,9 +24,9 @@ header h1 {
 }
 
 main {
-  height: 100%;
-  width: 100%;
+
   background-color: whitesmoke;
+  text-align: center;
 }
 
 footer {

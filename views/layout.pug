@@ -7,15 +7,15 @@ html
     script(defer, src="javascripts/bundle.js")
     meta(name="viewport", content="initial-scale=1")
     
-  body.container-fluid
-    header.row
+  body
+    header.row.gx-0
       span.col-2#user-infomation
       h1.col-8 みんなでクイズアプリ
-      span.col-2
+      span.col-2#menu
         a(href="/")
           i.gg-home#home
         
-    main
+    main.row.gx-0
       block content
     footer 
       p ⒞ゆうきまる
