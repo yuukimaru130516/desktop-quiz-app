@@ -118,10 +118,10 @@ const syutudai = () => {
     const intervalId = setInterval(async() => {
       str_output();
       if(counter === content.length){
+        clearInterval(intervalId);
         // TODO 待ち時間のバーを表示する
         $("#countdown-bar").animate({width: "0%"}, time, function() {
           $(this).css({width:"100%"});
-          clearInterval(intervalId);
           resolve();
         });
       }else if(stop) {

@@ -3,8 +3,19 @@ html
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(href='https://css.gg/home.css', rel='stylesheet')
     script(defer, src="javascripts/bundle.js")
+    meta(name="viewport", content="initial-scale=1")
     
-    
-  body.container
-    block content
+  body.container-fluid
+    header.row
+      span.col-2#user-infomation
+      h1.col-8 みんなでクイズアプリ
+      span.col-2
+        a(href="/")
+          i.gg-home#home
+        
+    main
+      block content
+    footer 
+      p ⒞ゆうきまる
