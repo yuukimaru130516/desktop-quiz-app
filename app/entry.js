@@ -18,18 +18,23 @@ const Questions = {
   "C": [],
   "D": []
 }
+// TODO 問題数取得
+const max = $("#max").data('max');
+console.log(max);
 
-let max = 0;
 
 // 問題数選択されてから難易度を表示する
 $("#select-degree").hide();
+$("#select-time").hide(); 
 $(".form-select").change(function() {
-  // 問題数取得
-  max = $("option:selected").val();
   $("#select-degree").show();
 })
 
-console.log(max);
+//難易度を選択してから持ち時間を表示する
+$("#select-degree").on("click", function() {
+  $("#select-time").show();
+})
+
 // suffle メソッド
 Array.prototype.shuffle = function() {
   this.sort(() => Math.random() - 0.5);
@@ -37,6 +42,7 @@ Array.prototype.shuffle = function() {
 
 // 難易度取得
 const rank = $("#rank").data('rank');
+console.log(rank);
 
 // 持ち時間(ミリ秒)
 const time = 5000;

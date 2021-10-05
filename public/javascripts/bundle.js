@@ -8775,16 +8775,20 @@ var Questions = {
   "B": [],
   "C": [],
   "D": []
-};
-var max = 0; // 問題数選択されてから難易度を表示する
+}; // TODO 問題数取得
+
+var max = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#max").data('max');
+console.log(max); // 問題数選択されてから難易度を表示する
 
 jquery__WEBPACK_IMPORTED_MODULE_0___default()("#select-degree").hide();
+jquery__WEBPACK_IMPORTED_MODULE_0___default()("#select-time").hide();
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(".form-select").change(function () {
-  // 問題数取得
-  max = jquery__WEBPACK_IMPORTED_MODULE_0___default()("option:selected").val();
   jquery__WEBPACK_IMPORTED_MODULE_0___default()("#select-degree").show();
-});
-console.log(max); // suffle メソッド
+}); //難易度を選択してから持ち時間を表示する
+
+jquery__WEBPACK_IMPORTED_MODULE_0___default()("#select-degree").on("click", function () {
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#select-time").show();
+}); // suffle メソッド
 
 Array.prototype.shuffle = function () {
   this.sort(function () {
@@ -8793,7 +8797,8 @@ Array.prototype.shuffle = function () {
 }; // 難易度取得
 
 
-var rank = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#rank").data('rank'); // 持ち時間(ミリ秒)
+var rank = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#rank").data('rank');
+console.log(rank); // 持ち時間(ミリ秒)
 
 var time = 5000; // クイズ取得
 
