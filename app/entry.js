@@ -11,6 +11,7 @@ import "bootstrap";
 // pugファイル内のrandomsを取得(サーバーからのAPIを取得する)
 let quizIndex = 0;
 let stop = false;
+let quesThrew = false;
 
 const Questions = {
   "A": [],
@@ -43,6 +44,10 @@ Array.prototype.shuffle = function() {
 // 持ち時間(ミリ秒)
 const time = 5000;
 
+let userAnswer = [];
+let ansCount = 0;
+let randomAnswer = [];
+
 
 // クイズ取得
 async function getQuiz() {
@@ -71,14 +76,21 @@ async function getQuiz() {
 
 // answerボタンがクリックされた処理
 $("#ans-btn").on("click", () => {
-  stop = true;
-  $('.popup').addClass('show').fadeIn();
+  //stop = true;
+  //$('.popup').addClass('show').fadeIn();
 
   });
 
 async function quizMain() {
   return new Promise(async (resolve) => {
     await syutudai();
+    if(!quesThrew){
+      await toAnswer();
+    }
+    drawAnswer();
+    await sleep(3000);
+    $("#countdown-bar").css({width: "100%"});
+    quesThrew = false;
     quizIndex++;
     resolve();
   });
@@ -91,8 +103,7 @@ async function mainRoop(){
 
   // 五問出すまで、メイン処理を繰り返す
   while(true){
-    let quizNumber = quizIndex + 1;
-    $("#Q").text("Q"+quizNumber);  
+    $("#Q").text("Q"+ (Number(quizIndex) + 1));  
     await quizMain();
     if(quizIndex === max){
       break;
@@ -105,9 +116,9 @@ mainRoop();
 // 出題部分
 const syutudai = () => {
   return new Promise(resolve => {
-    $("#quiz-area").text(' ');
+    $("#quiz-area").text('');
     $("#ans-area").text('');
-    $("#user-input-text").text(userAnswer);
+    $("#user-input-text").text('');
     let content = [];
     let counter = 0;
 
@@ -128,41 +139,52 @@ const syutudai = () => {
     }
 
     // 全て出力したら停止する
-    const intervalId = setInterval(async() => {
-      str_output();
-      if(counter === content.length){
+    const intervalId = setInterval(() => {
+        str_output()
+
+      // 問題文が読まれてクリックされなかった処理
+      if(counter === content.length) {
         clearInterval(intervalId);
-        // 待ち時間
         $("#countdown-bar").animate({width: "0%"}, time, function() {
-          $(this).css({width:"100%"});
-          // TODO ストップが押されたらanimateを中止する
+          quesThrew = true;
           resolve();
         });
-
-        // ans-btn が押された時の処理
-        $("#ans-btn").on("click", function() {
-          $("#countdown-bar").stop(async function() {
-            await toAnswer();
-            $(this).css({width: "100%"});
-            resolve();
-          })
-        });
-      }else if(stop) {
-        clearInterval(intervalId);
-        //TODO 回答処理、正答処理
-        await toAnswer();
-        resolve();
-
       }
+      // 解答ボタンが押された処理
+      $("#ans-btn").on("click", async function() {
+        // 問題文の途中で押された場合
+        if(counter !== content.length) {
+          clearInterval(intervalId);
+          resolve();
+          // 問題文が読み終わってから押された場合
+        }else {
+          $("#countdown-bar").stop(false, false);
+          resolve();
+        }
+      })
     }, 100);
+
+    // 問題が全部読まれた後time秒待つ
+    if(counter === 10) {
+      clearInterval(intervalId);
+      $("#countdown-bar").animate({width: "0%"}, time, function() {
+        $(this).css({width: "100%"});
+        resolve();
+      });
+    }
   })
 }
 
-let userAnswer = [];
-let ansCount = 0;
+function drawAnswer() {
+  const nowAnswer = Questions[rank][quizIndex].Content.Answer;
+  const nowAnswerYomi = Questions[rank][quizIndex].Content.Yomi;
+  $("#quiz-area").text("A. " + nowAnswer + " (" + nowAnswerYomi + ")");
+
+}
 
 function toAnswer(){
   // 正答
+  $('.popup').addClass('show').fadeIn();
   return new Promise(resolve => {
     let nowAnswerYomi = Questions[rank][quizIndex].Content.Yomi;
     let nowAnswerYomiEach = [];
@@ -196,7 +218,7 @@ function toAnswer(){
 
 function createAnswser(nowAnswerYomiEach){
   // 配列で4文字を作成する
-  let randomAnswer = [];
+  randomAnswer = [];
   return new Promise(resolve => {
     // 正解の文字をセット
     randomAnswer.push(nowAnswerYomiEach[ansCount]);
@@ -224,6 +246,7 @@ function createAnswser(nowAnswerYomiEach){
 
     // 生成した文字列を一文字ずつセットする
     randomAnswer.shuffle();
+    console.log(randomAnswer);
     randomAnswer.forEach((val) => {
       $("<div>", {
         class: 'card text-center mx-1 justify-content-center',
@@ -251,18 +274,18 @@ function inputAnswer(nowAnswerYomiEach) {
     userAnswer.push(answer);
     $("#user-input-text").text(userAnswer.join(""));
     $(".card").remove(); 
-    if(userAnswer.length  === nowAnswerYomiEach.length || userAnswer[ansCount] !== nowAnswerYomiEach[ansCount]) await waitOneStep();
+    if(userAnswer.length  === nowAnswerYomiEach.length || userAnswer[ansCount] !== nowAnswerYomiEach[ansCount]) await sleep(500);
     ansCount++;
     resolve();
   });
   })
 }
 
-function waitOneStep() {
+function sleep(ms) {
   return new Promise(resolve => {
     setTimeout(() => {
       resolve();
-    }, 500);
+    }, ms);
   })
 }
 

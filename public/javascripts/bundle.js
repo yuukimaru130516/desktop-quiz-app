@@ -8770,6 +8770,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var quizIndex = 0;
 var stop = false;
+var quesThrew = false;
 var Questions = {
   "A": [],
   "B": [],
@@ -8796,7 +8797,10 @@ Array.prototype.shuffle = function () {
 }; // 持ち時間(ミリ秒)
 
 
-var time = 5000; // クイズ取得
+var time = 5000;
+var userAnswer = [];
+var ansCount = 0;
+var randomAnswer = []; // クイズ取得
 
 function getQuiz() {
   return _getQuiz.apply(this, arguments);
@@ -8804,17 +8808,17 @@ function getQuiz() {
 
 
 function _getQuiz() {
-  _getQuiz = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
+  _getQuiz = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
     var response;
-    return regeneratorRuntime.wrap(function _callee5$(_context5) {
+    return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
-        switch (_context5.prev = _context5.next) {
+        switch (_context4.prev = _context4.next) {
           case 0:
-            _context5.next = 2;
+            _context4.next = 2;
             return jquery__WEBPACK_IMPORTED_MODULE_0___default.a.get('/quiz-api');
 
           case 2:
-            response = _context5.sent;
+            response = _context4.sent;
             response.quiz.forEach(function (value) {
               switch (value.Rank) {
                 case "A":
@@ -8841,17 +8845,16 @@ function _getQuiz() {
 
           case 8:
           case "end":
-            return _context5.stop();
+            return _context4.stop();
         }
       }
-    }, _callee5);
+    }, _callee4);
   }));
   return _getQuiz.apply(this, arguments);
 }
 
-jquery__WEBPACK_IMPORTED_MODULE_0___default()("#ans-btn").on("click", function () {
-  stop = true;
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()('.popup').addClass('show').fadeIn();
+jquery__WEBPACK_IMPORTED_MODULE_0___default()("#ans-btn").on("click", function () {//stop = true;
+  //$('.popup').addClass('show').fadeIn();
 });
 
 function quizMain() {
@@ -8860,43 +8863,61 @@ function quizMain() {
 
 
 function _quizMain() {
-  _quizMain = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7() {
-    return regeneratorRuntime.wrap(function _callee7$(_context7) {
+  _quizMain = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
+    return regeneratorRuntime.wrap(function _callee6$(_context6) {
       while (1) {
-        switch (_context7.prev = _context7.next) {
+        switch (_context6.prev = _context6.next) {
           case 0:
-            return _context7.abrupt("return", new Promise( /*#__PURE__*/function () {
-              var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6(resolve) {
-                return regeneratorRuntime.wrap(function _callee6$(_context6) {
+            return _context6.abrupt("return", new Promise( /*#__PURE__*/function () {
+              var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(resolve) {
+                return regeneratorRuntime.wrap(function _callee5$(_context5) {
                   while (1) {
-                    switch (_context6.prev = _context6.next) {
+                    switch (_context5.prev = _context5.next) {
                       case 0:
-                        _context6.next = 2;
+                        _context5.next = 2;
                         return syutudai();
 
                       case 2:
+                        if (quesThrew) {
+                          _context5.next = 5;
+                          break;
+                        }
+
+                        _context5.next = 5;
+                        return toAnswer();
+
+                      case 5:
+                        drawAnswer();
+                        _context5.next = 8;
+                        return sleep(3000);
+
+                      case 8:
+                        jquery__WEBPACK_IMPORTED_MODULE_0___default()("#countdown-bar").css({
+                          width: "100%"
+                        });
+                        quesThrew = false;
                         quizIndex++;
                         resolve();
 
-                      case 4:
+                      case 12:
                       case "end":
-                        return _context6.stop();
+                        return _context5.stop();
                     }
                   }
-                }, _callee6);
+                }, _callee5);
               }));
 
               return function (_x) {
-                return _ref5.apply(this, arguments);
+                return _ref4.apply(this, arguments);
               };
             }()));
 
           case 1:
           case "end":
-            return _context7.stop();
+            return _context6.stop();
         }
       }
-    }, _callee7);
+    }, _callee6);
   }));
   return _quizMain.apply(this, arguments);
 }
@@ -8906,41 +8927,39 @@ function mainRoop() {
 }
 
 function _mainRoop() {
-  _mainRoop = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8() {
-    var quizNumber;
-    return regeneratorRuntime.wrap(function _callee8$(_context8) {
+  _mainRoop = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7() {
+    return regeneratorRuntime.wrap(function _callee7$(_context7) {
       while (1) {
-        switch (_context8.prev = _context8.next) {
+        switch (_context7.prev = _context7.next) {
           case 0:
-            _context8.next = 2;
+            _context7.next = 2;
             return getQuiz();
 
           case 2:
             if (false) {}
 
-            quizNumber = quizIndex + 1;
-            jquery__WEBPACK_IMPORTED_MODULE_0___default()("#Q").text("Q" + quizNumber);
-            _context8.next = 7;
+            jquery__WEBPACK_IMPORTED_MODULE_0___default()("#Q").text("Q" + (Number(quizIndex) + 1));
+            _context7.next = 6;
             return quizMain();
 
-          case 7:
+          case 6:
             if (!(quizIndex === max)) {
-              _context8.next = 9;
+              _context7.next = 8;
               break;
             }
 
-            return _context8.abrupt("break", 11);
+            return _context7.abrupt("break", 10);
 
-          case 9:
-            _context8.next = 2;
+          case 8:
+            _context7.next = 2;
             break;
 
-          case 11:
+          case 10:
           case "end":
-            return _context8.stop();
+            return _context7.stop();
         }
       }
-    }, _callee8);
+    }, _callee7);
   }));
   return _mainRoop.apply(this, arguments);
 }
@@ -8950,9 +8969,9 @@ mainRoop(); // 出題部分
 
 var syutudai = function syutudai() {
   return new Promise(function (resolve) {
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#quiz-area").text(' ');
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#quiz-area").text('');
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("#ans-area").text('');
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#user-input-text").text(userAnswer);
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#user-input-text").text('');
     var content = [];
     var counter = 0; // 問題文を配列に代入
 
@@ -8972,85 +8991,66 @@ var syutudai = function syutudai() {
     }; // 全て出力したら停止する
 
 
-    var intervalId = setInterval( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-      return regeneratorRuntime.wrap(function _callee2$(_context2) {
-        while (1) {
-          switch (_context2.prev = _context2.next) {
-            case 0:
-              str_output();
+    var intervalId = setInterval(function () {
+      str_output(); // 問題文が読まれてクリックされなかった処理
 
-              if (!(counter === content.length)) {
-                _context2.next = 7;
-                break;
-              }
+      if (counter === content.length) {
+        clearInterval(intervalId);
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()("#countdown-bar").animate({
+          width: "0%"
+        }, time, function () {
+          quesThrew = true;
+          resolve();
+        });
+      } // 解答ボタンが押された処理
 
-              clearInterval(intervalId); // 待ち時間
 
-              jquery__WEBPACK_IMPORTED_MODULE_0___default()("#countdown-bar").animate({
-                width: "0%"
-              }, time, function () {
-                jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).css({
-                  width: "100%"
-                }); // TODO ストップが押されたらanimateを中止する
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()("#ans-btn").on("click", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                // 問題文の途中で押された場合
+                if (counter !== content.length) {
+                  clearInterval(intervalId);
+                  resolve(); // 問題文が読み終わってから押された場合
+                } else {
+                  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#countdown-bar").stop(false, false);
+                  resolve();
+                }
 
-                resolve();
-              }); // ans-btn が押された時の処理
-
-              jquery__WEBPACK_IMPORTED_MODULE_0___default()("#ans-btn").on("click", function () {
-                jquery__WEBPACK_IMPORTED_MODULE_0___default()("#countdown-bar").stop( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-                  return regeneratorRuntime.wrap(function _callee$(_context) {
-                    while (1) {
-                      switch (_context.prev = _context.next) {
-                        case 0:
-                          _context.next = 2;
-                          return toAnswer();
-
-                        case 2:
-                          jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).css({
-                            width: "100%"
-                          });
-                          resolve();
-
-                        case 4:
-                        case "end":
-                          return _context.stop();
-                      }
-                    }
-                  }, _callee, this);
-                })));
-              });
-              _context2.next = 12;
-              break;
-
-            case 7:
-              if (!stop) {
-                _context2.next = 12;
-                break;
-              }
-
-              clearInterval(intervalId); //TODO 回答処理、正答処理
-
-              _context2.next = 11;
-              return toAnswer();
-
-            case 11:
-              resolve();
-
-            case 12:
-            case "end":
-              return _context2.stop();
+              case 1:
+              case "end":
+                return _context.stop();
+            }
           }
-        }
-      }, _callee2);
-    })), 100);
+        }, _callee);
+      })));
+    }, 100); // 問題が全部読まれた後time秒待つ
+
+    if (counter === 10) {
+      clearInterval(intervalId);
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()("#countdown-bar").animate({
+        width: "0%"
+      }, time, function () {
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).css({
+          width: "100%"
+        });
+        resolve();
+      });
+    }
   });
 };
 
-var userAnswer = [];
-var ansCount = 0;
+function drawAnswer() {
+  var nowAnswer = Questions[rank][quizIndex].Content.Answer;
+  var nowAnswerYomi = Questions[rank][quizIndex].Content.Yomi;
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#quiz-area").text("A. " + nowAnswer + " (" + nowAnswerYomi + ")");
+}
 
 function toAnswer() {
   // 正答
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()('.popup').addClass('show').fadeIn();
   return new Promise(function (resolve) {
     var nowAnswerYomi = Questions[rank][quizIndex].Content.Yomi;
     var nowAnswerYomiEach = [];
@@ -9059,44 +9059,42 @@ function toAnswer() {
       nowAnswerYomiEach.push(nowAnswerYomi[i]);
     }
 
-    console.log(nowAnswerYomiEach);
-
-    _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
-      return regeneratorRuntime.wrap(function _callee3$(_context3) {
+    _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+      return regeneratorRuntime.wrap(function _callee2$(_context2) {
         while (1) {
-          switch (_context3.prev = _context3.next) {
+          switch (_context2.prev = _context2.next) {
             case 0:
               if (false) {}
 
-              _context3.next = 3;
+              _context2.next = 3;
               return createAnswser(nowAnswerYomiEach);
 
             case 3:
-              _context3.next = 5;
+              _context2.next = 5;
               return inputAnswer(nowAnswerYomiEach);
 
             case 5:
               if (!(userAnswer[ansCount - 1] != nowAnswerYomiEach[ansCount - 1])) {
-                _context3.next = 9;
+                _context2.next = 9;
                 break;
               }
 
               alert("不正解です");
               jquery__WEBPACK_IMPORTED_MODULE_0___default()('.popup').fadeOut();
-              return _context3.abrupt("break", 15);
+              return _context2.abrupt("break", 15);
 
             case 9:
               if (!(ansCount === nowAnswerYomiEach.length)) {
-                _context3.next = 13;
+                _context2.next = 13;
                 break;
               }
 
               alert("正解です");
               jquery__WEBPACK_IMPORTED_MODULE_0___default()('.popup').fadeOut();
-              return _context3.abrupt("break", 15);
+              return _context2.abrupt("break", 15);
 
             case 13:
-              _context3.next = 0;
+              _context2.next = 0;
               break;
 
             case 15:
@@ -9108,17 +9106,17 @@ function toAnswer() {
 
             case 19:
             case "end":
-              return _context3.stop();
+              return _context2.stop();
           }
         }
-      }, _callee3);
+      }, _callee2);
     }))();
   });
 }
 
 function createAnswser(nowAnswerYomiEach) {
   // 配列で4文字を作成する
-  var randomAnswer = [];
+  randomAnswer = [];
   return new Promise(function (resolve) {
     // 正解の文字をセット
     randomAnswer.push(nowAnswerYomiEach[ansCount]);
@@ -9146,6 +9144,7 @@ function createAnswser(nowAnswerYomiEach) {
 
 
     randomAnswer.shuffle();
+    console.log(randomAnswer);
     randomAnswer.forEach(function (val) {
       jquery__WEBPACK_IMPORTED_MODULE_0___default()("<div>", {
         class: 'card text-center mx-1 justify-content-center',
@@ -9169,11 +9168,11 @@ function createCharaSet(isGengo, randomAnswer) {
 
 function inputAnswer(nowAnswerYomiEach) {
   return new Promise(function (resolve) {
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()('.card').on("click", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()('.card').on("click", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
       var answer;
-      return regeneratorRuntime.wrap(function _callee4$(_context4) {
+      return regeneratorRuntime.wrap(function _callee3$(_context3) {
         while (1) {
-          switch (_context4.prev = _context4.next) {
+          switch (_context3.prev = _context3.next) {
             case 0:
               answer = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).data('text');
               userAnswer.push(answer);
@@ -9181,12 +9180,12 @@ function inputAnswer(nowAnswerYomiEach) {
               jquery__WEBPACK_IMPORTED_MODULE_0___default()(".card").remove();
 
               if (!(userAnswer.length === nowAnswerYomiEach.length || userAnswer[ansCount] !== nowAnswerYomiEach[ansCount])) {
-                _context4.next = 7;
+                _context3.next = 7;
                 break;
               }
 
-              _context4.next = 7;
-              return waitOneStep();
+              _context3.next = 7;
+              return sleep(500);
 
             case 7:
               ansCount++;
@@ -9194,19 +9193,19 @@ function inputAnswer(nowAnswerYomiEach) {
 
             case 9:
             case "end":
-              return _context4.stop();
+              return _context3.stop();
           }
         }
-      }, _callee4, this);
+      }, _callee3, this);
     })));
   });
 }
 
-function waitOneStep() {
+function sleep(ms) {
   return new Promise(function (resolve) {
     setTimeout(function () {
       resolve();
-    }, 500);
+    }, ms);
   });
 }
 
