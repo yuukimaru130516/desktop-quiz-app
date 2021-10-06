@@ -20,19 +20,18 @@ const Questions = {
 }
 // TODO 問題数取得
 const max = $("#max").data('max');
-console.log(max);
 
+// 難易度取得
+const rank = $("#rank").data('rank');
 
-// 問題数選択されてから難易度を表示する
-$("#select-degree").hide();
-$("#select-time").hide(); 
+// 問題数選択されてから難易度を表示する 
 $(".form-select").change(function() {
-  $("#select-degree").show();
+  $("#select-degree").css("visibility", "visible");
 })
 
 //難易度を選択してから持ち時間を表示する
 $("#select-degree").on("click", function() {
-  $("#select-time").show();
+  $("#select-time").css("visibility", "visible");
 })
 
 // suffle メソッド
@@ -40,9 +39,6 @@ Array.prototype.shuffle = function() {
   this.sort(() => Math.random() - 0.5);
 }
 
-// 難易度取得
-const rank = $("#rank").data('rank');
-console.log(rank);
 
 // 持ち時間(ミリ秒)
 const time = 5000;
@@ -73,9 +69,11 @@ async function getQuiz() {
   Questions.D.shuffle();
 }
 
-// answer
+// answerボタンがクリックされた処理
 $("#ans-btn").on("click", () => {
   stop = true;
+  $('.popup').addClass('show').fadeIn();
+
   });
 
 async function quizMain() {
@@ -108,7 +106,8 @@ mainRoop();
 const syutudai = () => {
   return new Promise(resolve => {
     $("#quiz-area").text(' ');
-    $("#ans-area").text('')
+    $("#ans-area").text('');
+    $("#user-input-text").text(userAnswer);
     let content = [];
     let counter = 0;
 
@@ -133,10 +132,20 @@ const syutudai = () => {
       str_output();
       if(counter === content.length){
         clearInterval(intervalId);
-        // TODO 待ち時間のバーを表示する
+        // 待ち時間
         $("#countdown-bar").animate({width: "0%"}, time, function() {
           $(this).css({width:"100%"});
+          // TODO ストップが押されたらanimateを中止する
           resolve();
+        });
+
+        // ans-btn が押された時の処理
+        $("#ans-btn").on("click", function() {
+          $("#countdown-bar").stop(async function() {
+            await toAnswer();
+            $(this).css({width: "100%"});
+            resolve();
+          })
         });
       }else if(stop) {
         clearInterval(intervalId);
@@ -163,18 +172,19 @@ function toAnswer(){
     (async() => {
       while(true){
         await createAnswser(nowAnswerYomiEach);
-        await inputAnswer();
+        await inputAnswer(nowAnswerYomiEach);
   
       // 正誤判定
-      if(userAnswer[ansCount -1] != nowAnswerYomiEach[ansCount - 1]){
-        alert("不正解です");
-        break;
-      }
-      if(ansCount === nowAnswerYomiEach.length){
-        alert("正解です");
-        break;  
-      }}
-
+        if(userAnswer[ansCount -1] != nowAnswerYomiEach[ansCount - 1]){
+          alert("不正解です");
+          $('.popup').fadeOut();
+          break;
+        }
+        if(ansCount === nowAnswerYomiEach.length){
+          alert("正解です");
+          $('.popup').fadeOut();
+          break;  
+        }}
       // 初期化処理
       stop = false;
       ansCount = 0;
@@ -216,7 +226,7 @@ function createAnswser(nowAnswerYomiEach){
     randomAnswer.shuffle();
     randomAnswer.forEach((val) => {
       $("<div>", {
-        class: 'card text-center',
+        class: 'card text-center mx-1 justify-content-center',
         'data-text': val,
         text: val
       }).appendTo('#ans-area');
@@ -234,15 +244,25 @@ function createCharaSet(isGengo, randomAnswer) {
 }
 
 // 答え入力
-function inputAnswer() {
+function inputAnswer(nowAnswerYomiEach) {
   return new Promise(resolve => {
-  $('.card').on("click", function() {
+  $('.card').on("click", async function() {
     let answer = $(this).data('text');
     userAnswer.push(answer);
+    $("#user-input-text").text(userAnswer.join(""));
     $(".card").remove(); 
+    if(userAnswer.length  === nowAnswerYomiEach.length || userAnswer[ansCount] !== nowAnswerYomiEach[ansCount]) await waitOneStep();
     ansCount++;
     resolve();
   });
+  })
+}
+
+function waitOneStep() {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve();
+    }, 500);
   })
 }
 

@@ -2,7 +2,7 @@ extends layout
 
 block content
   h2 クイズ部分  
-  h2#max(data-max=max) #{max}問
+  #max(data-max=max)
   h2#rank(data-rank=rank) #{rank} ランクが選択されています
   h4#Q.text-center
   #countdown-bar
@@ -10,5 +10,10 @@ block content
 
    
   button#ans-btn 答える！
-  #ans-area.card-columns
+  .popup
+    #user-input.rounded
+      h4 回答
+      h5#user-input-text
+    #ans-area.rounded
+      #ans-input
   

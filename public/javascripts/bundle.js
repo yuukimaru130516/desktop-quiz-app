@@ -8777,48 +8777,44 @@ var Questions = {
   "D": []
 }; // TODO 問題数取得
 
-var max = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#max").data('max');
-console.log(max); // 問題数選択されてから難易度を表示する
+var max = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#max").data('max'); // 難易度取得
 
-jquery__WEBPACK_IMPORTED_MODULE_0___default()("#select-degree").hide();
-jquery__WEBPACK_IMPORTED_MODULE_0___default()("#select-time").hide();
+var rank = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#rank").data('rank'); // 問題数選択されてから難易度を表示する 
+
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(".form-select").change(function () {
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#select-degree").show();
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#select-degree").css("visibility", "visible");
 }); //難易度を選択してから持ち時間を表示する
 
 jquery__WEBPACK_IMPORTED_MODULE_0___default()("#select-degree").on("click", function () {
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#select-time").show();
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#select-time").css("visibility", "visible");
 }); // suffle メソッド
 
 Array.prototype.shuffle = function () {
   this.sort(function () {
     return Math.random() - 0.5;
   });
-}; // 難易度取得
+}; // 持ち時間(ミリ秒)
 
-
-var rank = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#rank").data('rank');
-console.log(rank); // 持ち時間(ミリ秒)
 
 var time = 5000; // クイズ取得
 
 function getQuiz() {
   return _getQuiz.apply(this, arguments);
-} // answer
+} // answerボタンがクリックされた処理
 
 
 function _getQuiz() {
-  _getQuiz = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+  _getQuiz = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
     var response;
-    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+    return regeneratorRuntime.wrap(function _callee5$(_context5) {
       while (1) {
-        switch (_context3.prev = _context3.next) {
+        switch (_context5.prev = _context5.next) {
           case 0:
-            _context3.next = 2;
+            _context5.next = 2;
             return jquery__WEBPACK_IMPORTED_MODULE_0___default.a.get('/quiz-api');
 
           case 2:
-            response = _context3.sent;
+            response = _context5.sent;
             response.quiz.forEach(function (value) {
               switch (value.Rank) {
                 case "A":
@@ -8845,16 +8841,17 @@ function _getQuiz() {
 
           case 8:
           case "end":
-            return _context3.stop();
+            return _context5.stop();
         }
       }
-    }, _callee3);
+    }, _callee5);
   }));
   return _getQuiz.apply(this, arguments);
 }
 
 jquery__WEBPACK_IMPORTED_MODULE_0___default()("#ans-btn").on("click", function () {
   stop = true;
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()('.popup').addClass('show').fadeIn();
 });
 
 function quizMain() {
@@ -8863,18 +8860,18 @@ function quizMain() {
 
 
 function _quizMain() {
-  _quizMain = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
-    return regeneratorRuntime.wrap(function _callee5$(_context5) {
+  _quizMain = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7() {
+    return regeneratorRuntime.wrap(function _callee7$(_context7) {
       while (1) {
-        switch (_context5.prev = _context5.next) {
+        switch (_context7.prev = _context7.next) {
           case 0:
-            return _context5.abrupt("return", new Promise( /*#__PURE__*/function () {
-              var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(resolve) {
-                return regeneratorRuntime.wrap(function _callee4$(_context4) {
+            return _context7.abrupt("return", new Promise( /*#__PURE__*/function () {
+              var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6(resolve) {
+                return regeneratorRuntime.wrap(function _callee6$(_context6) {
                   while (1) {
-                    switch (_context4.prev = _context4.next) {
+                    switch (_context6.prev = _context6.next) {
                       case 0:
-                        _context4.next = 2;
+                        _context6.next = 2;
                         return syutudai();
 
                       case 2:
@@ -8883,23 +8880,23 @@ function _quizMain() {
 
                       case 4:
                       case "end":
-                        return _context4.stop();
+                        return _context6.stop();
                     }
                   }
-                }, _callee4);
+                }, _callee6);
               }));
 
               return function (_x) {
-                return _ref3.apply(this, arguments);
+                return _ref5.apply(this, arguments);
               };
             }()));
 
           case 1:
           case "end":
-            return _context5.stop();
+            return _context7.stop();
         }
       }
-    }, _callee5);
+    }, _callee7);
   }));
   return _quizMain.apply(this, arguments);
 }
@@ -8909,13 +8906,13 @@ function mainRoop() {
 }
 
 function _mainRoop() {
-  _mainRoop = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
+  _mainRoop = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8() {
     var quizNumber;
-    return regeneratorRuntime.wrap(function _callee6$(_context6) {
+    return regeneratorRuntime.wrap(function _callee8$(_context8) {
       while (1) {
-        switch (_context6.prev = _context6.next) {
+        switch (_context8.prev = _context8.next) {
           case 0:
-            _context6.next = 2;
+            _context8.next = 2;
             return getQuiz();
 
           case 2:
@@ -8923,27 +8920,27 @@ function _mainRoop() {
 
             quizNumber = quizIndex + 1;
             jquery__WEBPACK_IMPORTED_MODULE_0___default()("#Q").text("Q" + quizNumber);
-            _context6.next = 7;
+            _context8.next = 7;
             return quizMain();
 
           case 7:
             if (!(quizIndex === max)) {
-              _context6.next = 9;
+              _context8.next = 9;
               break;
             }
 
-            return _context6.abrupt("break", 11);
+            return _context8.abrupt("break", 11);
 
           case 9:
-            _context6.next = 2;
+            _context8.next = 2;
             break;
 
           case 11:
           case "end":
-            return _context6.stop();
+            return _context8.stop();
         }
       }
-    }, _callee6);
+    }, _callee8);
   }));
   return _mainRoop.apply(this, arguments);
 }
@@ -8955,6 +8952,7 @@ var syutudai = function syutudai() {
   return new Promise(function (resolve) {
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("#quiz-area").text(' ');
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("#ans-area").text('');
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#user-input-text").text(userAnswer);
     var content = [];
     var counter = 0; // 問題文を配列に代入
 
@@ -8974,51 +8972,76 @@ var syutudai = function syutudai() {
     }; // 全て出力したら停止する
 
 
-    var intervalId = setInterval( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-      return regeneratorRuntime.wrap(function _callee$(_context) {
+    var intervalId = setInterval( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+      return regeneratorRuntime.wrap(function _callee2$(_context2) {
         while (1) {
-          switch (_context.prev = _context.next) {
+          switch (_context2.prev = _context2.next) {
             case 0:
               str_output();
 
               if (!(counter === content.length)) {
-                _context.next = 6;
+                _context2.next = 7;
                 break;
               }
 
-              clearInterval(intervalId); // TODO 待ち時間のバーを表示する
+              clearInterval(intervalId); // 待ち時間
 
               jquery__WEBPACK_IMPORTED_MODULE_0___default()("#countdown-bar").animate({
                 width: "0%"
               }, time, function () {
                 jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).css({
                   width: "100%"
-                });
+                }); // TODO ストップが押されたらanimateを中止する
+
                 resolve();
+              }); // ans-btn が押された時の処理
+
+              jquery__WEBPACK_IMPORTED_MODULE_0___default()("#ans-btn").on("click", function () {
+                jquery__WEBPACK_IMPORTED_MODULE_0___default()("#countdown-bar").stop( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+                  return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                      switch (_context.prev = _context.next) {
+                        case 0:
+                          _context.next = 2;
+                          return toAnswer();
+
+                        case 2:
+                          jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).css({
+                            width: "100%"
+                          });
+                          resolve();
+
+                        case 4:
+                        case "end":
+                          return _context.stop();
+                      }
+                    }
+                  }, _callee, this);
+                })));
               });
-              _context.next = 11;
+              _context2.next = 12;
               break;
 
-            case 6:
+            case 7:
               if (!stop) {
-                _context.next = 11;
+                _context2.next = 12;
                 break;
               }
 
               clearInterval(intervalId); //TODO 回答処理、正答処理
 
-              _context.next = 10;
+              _context2.next = 11;
               return toAnswer();
 
-            case 10:
+            case 11:
               resolve();
 
-            case 11:
+            case 12:
             case "end":
-              return _context.stop();
+              return _context2.stop();
           }
         }
-      }, _callee);
+      }, _callee2);
     })), 100);
   });
 };
@@ -9036,55 +9059,59 @@ function toAnswer() {
       nowAnswerYomiEach.push(nowAnswerYomi[i]);
     }
 
-    _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+    console.log(nowAnswerYomiEach);
+
+    _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+      return regeneratorRuntime.wrap(function _callee3$(_context3) {
         while (1) {
-          switch (_context2.prev = _context2.next) {
+          switch (_context3.prev = _context3.next) {
             case 0:
               if (false) {}
 
-              _context2.next = 3;
+              _context3.next = 3;
               return createAnswser(nowAnswerYomiEach);
 
             case 3:
-              _context2.next = 5;
-              return inputAnswer();
+              _context3.next = 5;
+              return inputAnswer(nowAnswerYomiEach);
 
             case 5:
               if (!(userAnswer[ansCount - 1] != nowAnswerYomiEach[ansCount - 1])) {
-                _context2.next = 8;
+                _context3.next = 9;
                 break;
               }
 
               alert("不正解です");
-              return _context2.abrupt("break", 13);
+              jquery__WEBPACK_IMPORTED_MODULE_0___default()('.popup').fadeOut();
+              return _context3.abrupt("break", 15);
 
-            case 8:
+            case 9:
               if (!(ansCount === nowAnswerYomiEach.length)) {
-                _context2.next = 11;
+                _context3.next = 13;
                 break;
               }
 
               alert("正解です");
-              return _context2.abrupt("break", 13);
-
-            case 11:
-              _context2.next = 0;
-              break;
+              jquery__WEBPACK_IMPORTED_MODULE_0___default()('.popup').fadeOut();
+              return _context3.abrupt("break", 15);
 
             case 13:
+              _context3.next = 0;
+              break;
+
+            case 15:
               // 初期化処理
               stop = false;
               ansCount = 0;
               userAnswer = [];
               resolve();
 
-            case 17:
+            case 19:
             case "end":
-              return _context2.stop();
+              return _context3.stop();
           }
         }
-      }, _callee2);
+      }, _callee3);
     }))();
   });
 }
@@ -9121,7 +9148,7 @@ function createAnswser(nowAnswerYomiEach) {
     randomAnswer.shuffle();
     randomAnswer.forEach(function (val) {
       jquery__WEBPACK_IMPORTED_MODULE_0___default()("<div>", {
-        class: 'card text-center',
+        class: 'card text-center mx-1 justify-content-center',
         'data-text': val,
         text: val
       }).appendTo('#ans-area');
@@ -9140,15 +9167,46 @@ function createCharaSet(isGengo, randomAnswer) {
 } // 答え入力
 
 
-function inputAnswer() {
+function inputAnswer(nowAnswerYomiEach) {
   return new Promise(function (resolve) {
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()('.card').on("click", function () {
-      var answer = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).data('text');
-      userAnswer.push(answer);
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()(".card").remove();
-      ansCount++;
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()('.card').on("click", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
+      var answer;
+      return regeneratorRuntime.wrap(function _callee4$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              answer = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).data('text');
+              userAnswer.push(answer);
+              jquery__WEBPACK_IMPORTED_MODULE_0___default()("#user-input-text").text(userAnswer.join(""));
+              jquery__WEBPACK_IMPORTED_MODULE_0___default()(".card").remove();
+
+              if (!(userAnswer.length === nowAnswerYomiEach.length || userAnswer[ansCount] !== nowAnswerYomiEach[ansCount])) {
+                _context4.next = 7;
+                break;
+              }
+
+              _context4.next = 7;
+              return waitOneStep();
+
+            case 7:
+              ansCount++;
+              resolve();
+
+            case 9:
+            case "end":
+              return _context4.stop();
+          }
+        }
+      }, _callee4, this);
+    })));
+  });
+}
+
+function waitOneStep() {
+  return new Promise(function (resolve) {
+    setTimeout(function () {
       resolve();
-    });
+    }, 500);
   });
 }
 
