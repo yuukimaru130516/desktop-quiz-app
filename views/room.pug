@@ -1,0 +1,45 @@
+extends layout
+
+block content
+  p 最大4人までオンライン対戦可能なクイズアプリです
+  p 現在、約2万問収録しています
+  hr
+  p 早速ルームを作成する！
+  p 問題数と難易度を選択することで、ルームが作成できます
+  hr
+  ul 参加者
+    li #{userName}
+  
+  //- 問題数
+  h4#select-ques-number 問題数選択
+  form(method="post", action="/quiz", id="select-ques") 
+    select.form-select#select(aria-label="問題数を選択する", name="selectQues")
+      option(value="0") 問題数を選択する
+      option(value="5") 5
+      option(value="10") 10
+      option(value="30") 30
+      option(value="100") 100
+
+    //- 難易度
+    #select-degree.py-3
+      h4.py-2 難易度選択
+      a.btn.btn-border 
+        span#easy easy
+      a.btn.btn-border 
+        span#easy normal
+      a.btn.btn-border  
+        span#easy difficult 
+      a.btn.btn-border 
+        span#easy hard
+    
+    //- 持ち時間
+    #select-time.py-5
+      h4 持ち時間選択
+      input(type="range", min="5", max="10", step="1")
+    
+    //- ルーム作成
+    #create-room.py-2 
+      button(type="submit") ルーム作成!
+
+
+  
