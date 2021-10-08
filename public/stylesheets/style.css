@@ -19,10 +19,6 @@ header {
   cursor: pointer;
 }
 
-#menu {
-  text-align: center;
-}
-
 
 header h1 {
   text-align: center;
@@ -52,11 +48,6 @@ footer {
   width: 100%;
   background-color: orange;
   height: 16px;
-}
-
-
-#select-degree, #select-time {
-  visibility: hidden;
 }
 
 /*----------------------------
@@ -107,127 +98,78 @@ footer {
   cursor: pointer;
 }
 
+/*-----------------------------
+スライダー
+-------------------------------*/
 
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  outline: none;
+  background: #8acdff;
+  height: 14px;
+  width: 80%;
+  border-radius: 10px;
+  border: solid 3px #dff1ff;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  background: #53aeff;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.15);
+}
+input[type="range"]::-moz-range-thumb {
+  background: #53aeff;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.15);
+  border: none;
+}
+input[type="range"]::-moz-focus-outer {
+  border: 0;
+}
+input[type="range"]:active::-webkit-slider-thumb {
+  box-shadow: 0px 5px 10px -2px rgba(0, 0, 0, 0.3);
+}
 
-
+.cor {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+.cor-item {
+  margin: 10px 5px 30px 0;
+  
+}
 
 
 /*------------------------------
 ボタンの設定
 -------------------------------*/
 
-*,
-*:before,
-*:after {
-  -webkit-box-sizing: inherit;
-  box-sizing: inherit;
+.button {
+  display       : inline-block;
+  border-radius : 5%;          /* 角丸       */
+  font-size     : 18pt;        /* 文字サイズ */
+  text-align    : center;      /* 文字位置   */
+  cursor        : pointer;     /* カーソル   */
+  padding       : 12px 39px;   /* 余白       */
+  background    : #e08216;     /* 背景色     */
+  color         : #f5f5f5;     /* 文字色     */
+  line-height   : 1em;         /* 1行の高さ  */
+  transition    : .3s;         /* なめらか変化 */
+  box-shadow    : 6px 6px 10px #666666;  /* 影の設定 */
+  border        : 2px solid #e08216;    /* 枠の指定 */
 }
 
-
-.btn,
-a.btn,
-button.btn {
-  font-size: 1.6rem;
-  font-weight: 700;
-  line-height: 1.5;
-  position: relative;
-  display: inline-block;
-  padding: 1rem 4rem;
-  margin: 1rem 1rem;
-  width: 300px;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  -webkit-transition: all 0.3s;
-  transition: all 0.3s;
-  text-align: center;
-  vertical-align: middle;
-  text-decoration: none;
-  letter-spacing: 0.1em;
-  color: #212529;
-  border-radius: 0.5rem;
-}
-
-a.btn-border {
-  margin-bottom: 12px;
-  padding: 0;
-
-  -webkit-transition: all 0.3s;
-
-  transition: all 0.3s;
-
-  border-radius: 0;
-}
-
-a.btn-border span {
-  position: relative;
-
-  display: block;
-
-  padding: 1.25rem 3rem;
-
-  color: #000;
-  border: 2px solid #000;
-  border-radius: 0.5rem;
-  background: #fff;
-}
-
-a.btn-border:before {
-  position: absolute;
-  bottom: -8px;
-  left: 0;
-
-  display: block;
-
-  width: 100%;
-  height: 14px;
-
-  content: "";
-  -webkit-transition: all 0.3s;
-  transition: all 0.3s;
-
-  border: 2px solid #000;
-  border-top: 1px solid #000;
-  border-radius: 0 0 0.5rem 0.5rem;
-  background-image: -webkit-repeating-linear-gradient(
-    135deg,
-    #000,
-    #000 1px,
-    transparent 2px,
-    transparent 5px
-  );
-  background-image: repeating-linear-gradient(
-    -45deg,
-    #000,
-    #000 1px,
-    transparent 2px,
-    transparent 5px
-  );
-  background-size: 7px 7px;
-
-  -webkit-backface-visibility: hidden;
-
-  backface-visibility: hidden;
-}
-
-a.btn-border:hover {
-  -webkit-transform: translate(0, 3px);
-  transform: translate(0, 3px);
-}
-
-a.btn-border:hover:before {
-  bottom: -5px;
-}
-
-a.btn-border:active {
-  -webkit-transform: translate(0, 7px);
-  transform: translate(0, 7px);
-}
-
-a.btn-border:active:before {
-  bottom: -1px;
+.button:hover {
+  box-shadow    : none;        /* カーソル時の影消去 */
+  color         : #e08216;     /* 背景色     */
+  background    : #f5f5f5;     /* 文字色     */
 }
 
 /*---------------------------------------------------
@@ -276,9 +218,8 @@ a.btn-border:active:before {
 	position: relative;
 	background:#E08216;
 	cursor: pointer;
-    width: 50px;
-    height:50px;
-	border-radius: 5px;
+  width: 50px;
+  height:50px;
 }
 
 /*ボタン内側*/
@@ -289,26 +230,26 @@ a.btn-border:active:before {
     left: 14px;
     height: 3px;
     border-radius: 2px;
-	background: #fff;
+	background: whitesmoke;
   	width: 45%;
   }
 
 .openbtn span:nth-of-type(1) {
-	top:15px;	
+	top:10px;	
 }
 
 .openbtn span:nth-of-type(2) {
-	top:23px;
+	top:18px;
 }
 
 .openbtn span:nth-of-type(3) {
-	top:31px;
+	top:26px;
 }
 
 /*activeクラスが付与されると線が回転して×に*/
 
 .openbtn.active span:nth-of-type(1) {
-    top: 18px;
+    top: 15px;
     left: 18px;
     transform: translateY(6px) rotate(-45deg);
     width: 30%;
@@ -319,7 +260,7 @@ a.btn-border:active:before {
 }
 
 .openbtn.active span:nth-of-type(3){
-    top: 30px;
+    top: 27px;
     left: 18px;
     transform: translateY(-6px) rotate(45deg);
     width: 30%;

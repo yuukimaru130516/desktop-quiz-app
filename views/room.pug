@@ -14,32 +14,29 @@ block content
   h4#select-ques-number 問題数選択
   form(method="post", action="/quiz", id="select-ques") 
     select.form-select#select(aria-label="問題数を選択する", name="selectQues")
-      option(value="0") 問題数を選択する
+      option(value="0") 問題数を選択
       option(value="5") 5
       option(value="10") 10
       option(value="30") 30
       option(value="100") 100
 
     //- 難易度
-    #select-degree.py-3
-      h4.py-2 難易度選択
-      a.btn.btn-border 
-        span#easy easy
-      a.btn.btn-border 
-        span#easy normal
-      a.btn.btn-border  
-        span#easy difficult 
-      a.btn.btn-border 
-        span#easy hard
+    h4#select-degree.pt-5 難易度選択
+    select#select.form-select(name="rank")
+      option(value="0") 難易度を選択
+      option(value="A") かんたん
+      option(value="B") ふつう
+      option(value="C") むずかしい
+      option(value="D") おに
     
     //- 持ち時間
-    #select-time.py-5
-      h4 持ち時間選択
-      input(type="range", min="5", max="10", step="1")
+    h4#select-time.pt-5 持ち時間選択
+    input.pr-3#bar(type="range", min="3", max="15", step="1", name="time", value="5")
+    span#score
     
     //- ルーム作成
-    #create-room.py-2 
-      button(type="submit") ルーム作成!
+    #create-room.pt-5.py-5
+      button.button(type="submit") ルーム作成!
 
 
   

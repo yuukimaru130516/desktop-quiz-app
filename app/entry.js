@@ -13,6 +13,13 @@ $(".openbtn").click(function () {
   $('#nav').toggleClass('in');
 });
 
+// スライドバー
+$("#score").html($("#bar").val() + " sec.");
+$('#bar').on('input change', function() {
+  // 変動
+  $('#score').html($(this).val() + " sec.");
+});
+
 
 // TODO トップ画面
 // pugファイル内のrandomsを取得(サーバーからのAPIを取得する)
@@ -31,24 +38,14 @@ const max = $("#max").data('max');
 // 難易度取得
 const rank = $("#rank").data('rank');
 
-// 問題数選択されてから難易度を表示する 
-$(".form-select").change(function() {
-  $("#select-degree").css("visibility", "visible");
-})
+// 持ち時間取得
+const time = $("#time").data('time');
 
-//難易度を選択してから持ち時間を表示する
-$("#select-degree").on("click", function() {
-  $("#select-time").css("visibility", "visible");
-})
 
 // suffle メソッド
 Array.prototype.shuffle = function() {
   this.sort(() => Math.random() - 0.5);
 }
-
-
-// 持ち時間(ミリ秒)
-const time = 5000;
 
 let userAnswer = [];
 let ansCount = 0;
@@ -99,7 +96,9 @@ async function quizMain() {
 // main 
 async function mainRoop(){
   // クイズ取得
-  await getQuiz();
+  if(Questions[rank].length === 0){
+    await getQuiz();
+  }
 
   // 五問出すまで、メイン処理を繰り返す
   while(true){
@@ -124,6 +123,7 @@ const syutudai = () => {
     $("#answer-limit").text('');
     let content = [];
     let counter = 0;
+    $("#cor-rate").text(Questions[rank][quizIndex].Correct_rate + "%");
 
     // 問題文を配列に代入
     const stdQuiz = Questions[rank][quizIndex].Content.Question;  
@@ -301,7 +301,7 @@ function inputAnswer(nowAnswerYomiEach) {
       clearInterval(timeout);
       resolve();
     }
-  }, time * 2);
+  }, time + 5000);
 
   // 選択肢クリック処理
   $('.card').on("click", async function() {

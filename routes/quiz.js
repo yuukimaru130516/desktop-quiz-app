@@ -7,9 +7,11 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', (req, res, next) => {
-  const rank = "A";
+  const rank = req.body.rank;
   const max = req.body.selectQues;
-  res.render('quiz', {rank, max});
+  const time = Number(req.body.time) * 1000;
+  console.log(time);
+  res.render('quiz', {rank, max, time});
 })
 
 module.exports = router;

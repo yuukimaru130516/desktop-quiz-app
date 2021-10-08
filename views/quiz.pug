@@ -1,16 +1,20 @@
 extends layout
 
 block content  
-  h4#Q.text-center
-  #countdown-bar
   h2#rank(data-rank=rank) #{rank}ランク
   #max(data-max=max)
+  #time(data-time=time)
   ul 参加者
     li #{userName}
-  p#quiz-area
-
-   
-  button#ans-btn 答える！
+  hr
+  h4#Q.text-center
+  #countdown-bar
+  .cor
+    .cor-item 正答率：
+    .cor-item#cor-rate
+  p#quiz-area.mb-5
+  hr
+  button#ans-btn.mt-5 答える！
   .popup
     #user-input.rounded
       h4 回答

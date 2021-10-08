@@ -8771,6 +8771,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(".openbtn").click(function () {
   jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).toggleClass('active');
   jquery__WEBPACK_IMPORTED_MODULE_0___default()('#nav').fadeToggle(500);
   jquery__WEBPACK_IMPORTED_MODULE_0___default()('#nav').toggleClass('in');
+}); // スライドバー
+
+jquery__WEBPACK_IMPORTED_MODULE_0___default()("#score").html(jquery__WEBPACK_IMPORTED_MODULE_0___default()("#bar").val() + " sec.");
+jquery__WEBPACK_IMPORTED_MODULE_0___default()('#bar').on('input change', function () {
+  // 変動
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()('#score').html(jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).val() + " sec.");
 }); // TODO トップ画面
 // pugファイル内のrandomsを取得(サーバーからのAPIを取得する)
 
@@ -8785,24 +8791,16 @@ var Questions = {
 
 var max = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#max").data('max'); // 難易度取得
 
-var rank = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#rank").data('rank'); // 問題数選択されてから難易度を表示する 
+var rank = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#rank").data('rank'); // 持ち時間取得
 
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(".form-select").change(function () {
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#select-degree").css("visibility", "visible");
-}); //難易度を選択してから持ち時間を表示する
-
-jquery__WEBPACK_IMPORTED_MODULE_0___default()("#select-degree").on("click", function () {
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#select-time").css("visibility", "visible");
-}); // suffle メソッド
+var time = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#time").data('time'); // suffle メソッド
 
 Array.prototype.shuffle = function () {
   this.sort(function () {
     return Math.random() - 0.5;
   });
-}; // 持ち時間(ミリ秒)
+};
 
-
-var time = 5000;
 var userAnswer = [];
 var ansCount = 0;
 var randomAnswer = [];
@@ -8933,32 +8931,37 @@ function _mainRoop() {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
-            _context7.next = 2;
-            return getQuiz();
-
-          case 2:
-            if (false) {}
-
-            jquery__WEBPACK_IMPORTED_MODULE_0___default()("#Q").text("Q" + (Number(quizIndex) + 1));
-            _context7.next = 6;
-            return quizMain();
-
-          case 6:
-            if (!(quizIndex === max)) {
-              _context7.next = 8;
+            if (!(Questions[rank].length === 0)) {
+              _context7.next = 3;
               break;
             }
 
-            return _context7.abrupt("break", 10);
+            _context7.next = 3;
+            return getQuiz();
 
-          case 8:
-            _context7.next = 2;
+          case 3:
+            if (false) {}
+
+            jquery__WEBPACK_IMPORTED_MODULE_0___default()("#Q").text("Q" + (Number(quizIndex) + 1));
+            _context7.next = 7;
+            return quizMain();
+
+          case 7:
+            if (!(quizIndex === max)) {
+              _context7.next = 9;
+              break;
+            }
+
+            return _context7.abrupt("break", 11);
+
+          case 9:
+            _context7.next = 3;
             break;
 
-          case 10:
+          case 11:
             jquery__WEBPACK_IMPORTED_MODULE_0___default()("#quiz-area").text("全てのクイズが終了しました");
 
-          case 11:
+          case 12:
           case "end":
             return _context7.stop();
         }
@@ -8978,7 +8981,8 @@ var syutudai = function syutudai() {
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("#user-input-text").text('');
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("#answer-limit").text('');
     var content = [];
-    var counter = 0; // 問題文を配列に代入
+    var counter = 0;
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cor-rate").text(Questions[rank][quizIndex].Correct_rate + "%"); // 問題文を配列に代入
 
     var stdQuiz = Questions[rank][quizIndex].Content.Question;
 
@@ -9205,7 +9209,7 @@ function inputAnswer(nowAnswerYomiEach) {
         clearInterval(timeout);
         resolve();
       }
-    }, time * 2); // 選択肢クリック処理
+    }, time + 5000); // 選択肢クリック処理
 
     jquery__WEBPACK_IMPORTED_MODULE_0___default()('.card').on("click", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
       var answer;
