@@ -6,11 +6,16 @@ import $ from 'jquery';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
 
+// ハンバーガーメニュー
+$(".openbtn").click(function () {
+  $(this).toggleClass('active');
+  $('#nav').toggleClass('in');
+});
+
 
 // TODO トップ画面
 // pugファイル内のrandomsを取得(サーバーからのAPIを取得する)
 let quizIndex = 0;
-let stop = false;
 let quesThrew = false;
 
 const Questions = {
@@ -47,6 +52,7 @@ const time = 5000;
 let userAnswer = [];
 let ansCount = 0;
 let randomAnswer = [];
+let isTimeout = false;
 
 
 // クイズ取得
@@ -73,13 +79,6 @@ async function getQuiz() {
   Questions.C.shuffle();
   Questions.D.shuffle();
 }
-
-// answerボタンがクリックされた処理
-$("#ans-btn").on("click", () => {
-  //stop = true;
-  //$('.popup').addClass('show').fadeIn();
-
-  });
 
 async function quizMain() {
   return new Promise(async (resolve) => {
@@ -109,6 +108,8 @@ async function mainRoop(){
       break;
     }
   }
+
+  $("#quiz-area").text("全てのクイズが終了しました");
 };
 
 mainRoop();
@@ -119,6 +120,7 @@ const syutudai = () => {
     $("#quiz-area").text('');
     $("#ans-area").text('');
     $("#user-input-text").text('');
+    $("#answer-limit").text('');
     let content = [];
     let counter = 0;
 
@@ -150,13 +152,14 @@ const syutudai = () => {
           resolve();
         });
       }
+
       // 解答ボタンが押された処理
       $("#ans-btn").on("click", async function() {
         // 問題文の途中で押された場合
         if(counter !== content.length) {
           clearInterval(intervalId);
           resolve();
-          // 問題文が読み終わってから押された場合
+        // 問題文が読み終わってから押された場合
         }else {
           $("#countdown-bar").stop(false, false);
           resolve();
@@ -178,14 +181,14 @@ const syutudai = () => {
 function drawAnswer() {
   const nowAnswer = Questions[rank][quizIndex].Content.Answer;
   const nowAnswerYomi = Questions[rank][quizIndex].Content.Yomi;
-  $("#quiz-area").text("A. " + nowAnswer + " (" + nowAnswerYomi + ")");
+  $("#quiz-area").text("A. " + nowAnswer + "  (" + nowAnswerYomi + ")");
 
 }
 
 function toAnswer(){
+  return new Promise(resolve => {
   // 正答
   $('.popup').addClass('show').fadeIn();
-  return new Promise(resolve => {
     let nowAnswerYomi = Questions[rank][quizIndex].Content.Yomi;
     let nowAnswerYomiEach = [];
     for(let i in nowAnswerYomi){
@@ -195,8 +198,11 @@ function toAnswer(){
       while(true){
         await createAnswser(nowAnswerYomiEach);
         await inputAnswer(nowAnswerYomiEach);
-  
+
       // 正誤判定
+        if(isTimeout){
+          break;
+        }
         if(userAnswer[ansCount -1] != nowAnswerYomiEach[ansCount - 1]){
           alert("不正解です");
           $('.popup').fadeOut();
@@ -208,13 +214,31 @@ function toAnswer(){
           break;  
         }}
       // 初期化処理
-      stop = false;
       ansCount = 0;
       userAnswer = [];
+      isTimeout = false;
       resolve();  
       })();
   });
-} 
+}
+
+// 時間制限
+function answerLimit(time) {
+  let count = time/1000 + 1;
+  const interval = setInterval(() => {
+    count -= 1;
+    $("#answer-limit").text(count);
+    if(count === 0){
+      clearInterval(interval);
+      alert("時間切れです");
+      $('.popup').fadeOut();
+      isTimeout = true;
+    }
+  }, 1000);
+  return interval;
+}
+
+
 
 function createAnswser(nowAnswerYomiEach){
   // 配列で4文字を作成する
@@ -246,7 +270,6 @@ function createAnswser(nowAnswerYomiEach){
 
     // 生成した文字列を一文字ずつセットする
     randomAnswer.shuffle();
-    console.log(randomAnswer);
     randomAnswer.forEach((val) => {
       $("<div>", {
         class: 'card text-center mx-1 justify-content-center',
@@ -269,7 +292,19 @@ function createCharaSet(isGengo, randomAnswer) {
 // 答え入力
 function inputAnswer(nowAnswerYomiEach) {
   return new Promise(resolve => {
+  // 時間制限
+  const interval = answerLimit(time);
+  // 時間切れだったらresolveする
+  const timeout = setTimeout(() => {
+    if(isTimeout){
+      clearInterval(timeout);
+      resolve();
+    }
+  }, time * 2);
+
+  // 選択肢クリック処理
   $('.card').on("click", async function() {
+    clearInterval(interval);
     let answer = $(this).data('text');
     userAnswer.push(answer);
     $("#user-input-text").text(userAnswer.join(""));
@@ -278,7 +313,7 @@ function inputAnswer(nowAnswerYomiEach) {
     ansCount++;
     resolve();
   });
-  })
+  });
 }
 
 function sleep(ms) {

@@ -8765,11 +8765,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
- // TODO トップ画面
+ // ハンバーガーメニュー
+
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(".openbtn").click(function () {
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).toggleClass('active');
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()('#nav').toggleClass('in');
+}); // TODO トップ画面
 // pugファイル内のrandomsを取得(サーバーからのAPIを取得する)
 
 var quizIndex = 0;
-var stop = false;
 var quesThrew = false;
 var Questions = {
   "A": [],
@@ -8800,12 +8804,12 @@ Array.prototype.shuffle = function () {
 var time = 5000;
 var userAnswer = [];
 var ansCount = 0;
-var randomAnswer = []; // クイズ取得
+var randomAnswer = [];
+var isTimeout = false; // クイズ取得
 
 function getQuiz() {
   return _getQuiz.apply(this, arguments);
-} // answerボタンがクリックされた処理
-
+}
 
 function _getQuiz() {
   _getQuiz = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
@@ -8852,10 +8856,6 @@ function _getQuiz() {
   }));
   return _getQuiz.apply(this, arguments);
 }
-
-jquery__WEBPACK_IMPORTED_MODULE_0___default()("#ans-btn").on("click", function () {//stop = true;
-  //$('.popup').addClass('show').fadeIn();
-});
 
 function quizMain() {
   return _quizMain.apply(this, arguments);
@@ -8955,6 +8955,9 @@ function _mainRoop() {
             break;
 
           case 10:
+            jquery__WEBPACK_IMPORTED_MODULE_0___default()("#quiz-area").text("全てのクイズが終了しました");
+
+          case 11:
           case "end":
             return _context7.stop();
         }
@@ -8972,6 +8975,7 @@ var syutudai = function syutudai() {
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("#quiz-area").text('');
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("#ans-area").text('');
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("#user-input-text").text('');
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#answer-limit").text('');
     var content = [];
     var counter = 0; // 問題文を配列に代入
 
@@ -9045,13 +9049,13 @@ var syutudai = function syutudai() {
 function drawAnswer() {
   var nowAnswer = Questions[rank][quizIndex].Content.Answer;
   var nowAnswerYomi = Questions[rank][quizIndex].Content.Yomi;
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#quiz-area").text("A. " + nowAnswer + " (" + nowAnswerYomi + ")");
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#quiz-area").text("A. " + nowAnswer + "  (" + nowAnswerYomi + ")");
 }
 
 function toAnswer() {
-  // 正答
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()('.popup').addClass('show').fadeIn();
   return new Promise(function (resolve) {
+    // 正答
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()('.popup').addClass('show').fadeIn();
     var nowAnswerYomi = Questions[rank][quizIndex].Content.Yomi;
     var nowAnswerYomiEach = [];
 
@@ -9074,37 +9078,45 @@ function toAnswer() {
               return inputAnswer(nowAnswerYomiEach);
 
             case 5:
+              if (!isTimeout) {
+                _context2.next = 7;
+                break;
+              }
+
+              return _context2.abrupt("break", 17);
+
+            case 7:
               if (!(userAnswer[ansCount - 1] != nowAnswerYomiEach[ansCount - 1])) {
-                _context2.next = 9;
+                _context2.next = 11;
                 break;
               }
 
               alert("不正解です");
               jquery__WEBPACK_IMPORTED_MODULE_0___default()('.popup').fadeOut();
-              return _context2.abrupt("break", 15);
+              return _context2.abrupt("break", 17);
 
-            case 9:
+            case 11:
               if (!(ansCount === nowAnswerYomiEach.length)) {
-                _context2.next = 13;
+                _context2.next = 15;
                 break;
               }
 
               alert("正解です");
               jquery__WEBPACK_IMPORTED_MODULE_0___default()('.popup').fadeOut();
-              return _context2.abrupt("break", 15);
+              return _context2.abrupt("break", 17);
 
-            case 13:
+            case 15:
               _context2.next = 0;
               break;
 
-            case 15:
+            case 17:
               // 初期化処理
-              stop = false;
               ansCount = 0;
               userAnswer = [];
+              isTimeout = false;
               resolve();
 
-            case 19:
+            case 21:
             case "end":
               return _context2.stop();
           }
@@ -9112,6 +9124,23 @@ function toAnswer() {
       }, _callee2);
     }))();
   });
+} // 時間制限
+
+
+function answerLimit(time) {
+  var count = time / 1000 + 1;
+  var interval = setInterval(function () {
+    count -= 1;
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#answer-limit").text(count);
+
+    if (count === 0) {
+      clearInterval(interval);
+      alert("時間切れです");
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.popup').fadeOut();
+      isTimeout = true;
+    }
+  }, 1000);
+  return interval;
 }
 
 function createAnswser(nowAnswerYomiEach) {
@@ -9144,7 +9173,6 @@ function createAnswser(nowAnswerYomiEach) {
 
 
     randomAnswer.shuffle();
-    console.log(randomAnswer);
     randomAnswer.forEach(function (val) {
       jquery__WEBPACK_IMPORTED_MODULE_0___default()("<div>", {
         class: 'card text-center mx-1 justify-content-center',
@@ -9168,30 +9196,41 @@ function createCharaSet(isGengo, randomAnswer) {
 
 function inputAnswer(nowAnswerYomiEach) {
   return new Promise(function (resolve) {
+    // 時間制限
+    var interval = answerLimit(time); // 時間切れだったらresolveする
+
+    var timeout = setTimeout(function () {
+      if (isTimeout) {
+        clearInterval(timeout);
+        resolve();
+      }
+    }, time * 2); // 選択肢クリック処理
+
     jquery__WEBPACK_IMPORTED_MODULE_0___default()('.card').on("click", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
       var answer;
       return regeneratorRuntime.wrap(function _callee3$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
+              clearInterval(interval);
               answer = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).data('text');
               userAnswer.push(answer);
               jquery__WEBPACK_IMPORTED_MODULE_0___default()("#user-input-text").text(userAnswer.join(""));
               jquery__WEBPACK_IMPORTED_MODULE_0___default()(".card").remove();
 
               if (!(userAnswer.length === nowAnswerYomiEach.length || userAnswer[ansCount] !== nowAnswerYomiEach[ansCount])) {
-                _context3.next = 7;
+                _context3.next = 8;
                 break;
               }
 
-              _context3.next = 7;
+              _context3.next = 8;
               return sleep(500);
 
-            case 7:
+            case 8:
               ansCount++;
               resolve();
 
-            case 9:
+            case 10:
             case "end":
               return _context3.stop();
           }

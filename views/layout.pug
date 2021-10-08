@@ -9,11 +9,22 @@ html
     
   body
     header.row.gx-0
-      span.col-2#user-infomation
+      .col-2#user-infomation
       h1.col-8 みんなでクイズアプリ
-      span.col-2#menu
-        a(href="/")
-          i.gg-home#home
+      .col-2#menu
+        .openbtn
+          span 
+          span
+          span
+      nav#nav 
+        ul
+          li
+            a(href="/") ホーム
+          li
+            a(href="#") お問い合わせ
+          li
+            a(href="#") 利用規約
+
         
     main.row.gx-0
       block content
