@@ -9,6 +9,7 @@ import "bootstrap";
 // ハンバーガーメニュー
 $(".openbtn").click(function () {
   $(this).toggleClass('active');
+  $('#nav').fadeToggle(500);
   $('#nav').toggleClass('in');
 });
 

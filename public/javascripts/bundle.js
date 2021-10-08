@@ -8769,6 +8769,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(".openbtn").click(function () {
   jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).toggleClass('active');
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()('#nav').fadeToggle(500);
   jquery__WEBPACK_IMPORTED_MODULE_0___default()('#nav').toggleClass('in');
 }); // TODO トップ画面
 // pugファイル内のrandomsを取得(サーバーからのAPIを取得する)
