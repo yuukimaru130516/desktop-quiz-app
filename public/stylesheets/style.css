@@ -8,8 +8,10 @@ body {
   min-height: 100vh;
 }
 
+
 header {
   width: 100%;
+  height: 75px;
   padding-top: 1rem;
   background-color:  #E08216;
 }
@@ -38,6 +40,7 @@ footer {
   color: whitesmoke;
   padding-top: 1rem;
   margin-top: auto;
+  height: 50px;
 }
 
 #top{
@@ -48,6 +51,24 @@ footer {
   width: 100%;
   background-color: orange;
   height: 16px;
+}
+
+#user-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-first;
+  
+}
+
+.user-img {
+  width: 30px;
+  height: 30px;
+  margin-left: 10px;
+  background: no-repeat left/80% url("../images/home.png")
+}
+
+.user-name {
+  padding-top: 0.1rem;
 }
 
 /*----------------------------
@@ -72,17 +93,24 @@ footer {
 }
 
 #user-input h4 {
-  padding-bottom: 2rem;
+  padding-bottom: 0
 }
 
 
+#answer-limit {
+  text-align: left;
+}
 
 #ans-area {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   background: #fff;
-  padding-top: 2rem;
   height: 20%;
   width: 60%;
 }
+
 
 .show {
   display: flex;
@@ -90,12 +118,20 @@ footer {
   align-items: center;
 }
 
-.card{
-  float: left;
-  height: 30%;
-  width: 20%;
+.text-box{
+  width: 50px;
+  height: 50px;
+  margin: 0 5px;
+  border: solid 1px black;
+  border-radius: 3px;
+  background-color: whitesmoke;
   font-size: xx-large;
   cursor: pointer;
+}
+
+#quiz-area {
+  padding: 0 10px;
+  text-align: left;
 }
 
 /*-----------------------------
@@ -172,6 +208,25 @@ input[type="range"]:active::-webkit-slider-thumb {
   background    : #f5f5f5;     /* 文字色     */
 }
 
+.btn-real-dent {
+  /*周りの凹み*/
+  display: inline-block;
+  position: relative;
+  text-decoration: none;
+  color: rgba(3, 169, 244, 0.54);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  text-align: center;
+  background: #f7f7f7;
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.08);
+}
+
+.btn-real-dent .fa:active {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 2px 2px rgba(0, 0, 0, 0.19);
+  border-bottom: solid 2px #d8d8d8;
+}
+
 /*---------------------------------------------------
 ハンバーガーメニュー
 ----------------------------------------------------*/
@@ -181,7 +236,8 @@ input[type="range"]:active::-webkit-slider-thumb {
   top: 75px;
   left: 100%;
   width: 40%;
-  height: 100vh;
+  opacity: 0.8;
+  height: calc(100vh - 75px - 50px);
   background: rgb(243, 208, 143);
 /*０.7秒かけてナビメニューがスライドする*/
   transition: .7s;

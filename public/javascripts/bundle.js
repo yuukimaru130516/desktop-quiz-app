@@ -8959,7 +8959,7 @@ function _mainRoop() {
             break;
 
           case 11:
-            jquery__WEBPACK_IMPORTED_MODULE_0___default()("#quiz-area").text("全てのクイズが終了しました");
+            jquery__WEBPACK_IMPORTED_MODULE_0___default()("#display-ans").text("全てのクイズが終了しました");
 
           case 12:
           case "end":
@@ -8972,16 +8972,18 @@ function _mainRoop() {
 }
 
 ;
-mainRoop(); // 出題部分
+mainRoop();
+var counter = 0; // 出題部分
 
 var syutudai = function syutudai() {
   return new Promise(function (resolve) {
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("#quiz-area").text('');
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#display-ans").text('');
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("#ans-area").text('');
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("#user-input-text").text('');
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("#answer-limit").text('');
     var content = [];
-    var counter = 0;
+    counter = 0;
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cor-rate").text(Questions[rank][quizIndex].Correct_rate + "%"); // 問題文を配列に代入
 
     var stdQuiz = Questions[rank][quizIndex].Content.Question;
@@ -9035,26 +9037,23 @@ var syutudai = function syutudai() {
           }
         }, _callee);
       })));
-    }, 100); // 問題が全部読まれた後time秒待つ
-
-    if (counter === 10) {
-      clearInterval(intervalId);
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()("#countdown-bar").animate({
-        width: "0%"
-      }, time, function () {
-        jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).css({
-          width: "100%"
-        });
-        resolve();
-      });
-    }
+    }, 100);
   });
-};
+}; // 答えを描画
+
 
 function drawAnswer() {
   var nowAnswer = Questions[rank][quizIndex].Content.Answer;
   var nowAnswerYomi = Questions[rank][quizIndex].Content.Yomi;
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#quiz-area").text("A. " + nowAnswer + "  (" + nowAnswerYomi + ")");
+  var nowQues = Questions[rank][quizIndex].Content.Question;
+  console.log(counter);
+  console.log(nowQues.length);
+
+  if (counter !== nowQues.length) {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#quiz-area").text(nowQues);
+  }
+
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#display-ans").text("A. " + nowAnswer + "  (" + nowAnswerYomi + ")");
 }
 
 function toAnswer() {
@@ -9180,7 +9179,7 @@ function createAnswser(nowAnswerYomiEach) {
     randomAnswer.shuffle();
     randomAnswer.forEach(function (val) {
       jquery__WEBPACK_IMPORTED_MODULE_0___default()("<div>", {
-        class: 'card text-center mx-1 justify-content-center',
+        class: 'text-box',
         'data-text': val,
         text: val
       }).appendTo('#ans-area');
@@ -9211,7 +9210,7 @@ function inputAnswer(nowAnswerYomiEach) {
       }
     }, time + 5000); // 選択肢クリック処理
 
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()('.card').on("click", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()('.text-box').on("click", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
       var answer;
       return regeneratorRuntime.wrap(function _callee3$(_context3) {
         while (1) {
@@ -9221,7 +9220,7 @@ function inputAnswer(nowAnswerYomiEach) {
               answer = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).data('text');
               userAnswer.push(answer);
               jquery__WEBPACK_IMPORTED_MODULE_0___default()("#user-input-text").text(userAnswer.join(""));
-              jquery__WEBPACK_IMPORTED_MODULE_0___default()(".card").remove();
+              jquery__WEBPACK_IMPORTED_MODULE_0___default()(".text-box").remove();
 
               if (!(userAnswer.length === nowAnswerYomiEach.length || userAnswer[ansCount] !== nowAnswerYomiEach[ansCount])) {
                 _context3.next = 8;

@@ -9,7 +9,7 @@ html
     
   body
     header.row.gx-0
-      .col-2#user-infomation
+      .col-2
       h1.col-8 みんなでクイズアプリ
       .col-2#menu
         .openbtn
@@ -26,7 +26,14 @@ html
             a(href="#") 利用規約
 
         
-    main.row.gx-0
+    main
+      if userName
+        #user-info.pt-3.pb-3
+          .user-img 
+          .user-name #{userName}
+        hr
+      else 
+
       block content
     footer 
       p © ゆうきまる

@@ -22,7 +22,6 @@ $('#bar').on('input change', function() {
 
 
 // TODO トップ画面
-// pugファイル内のrandomsを取得(サーバーからのAPIを取得する)
 let quizIndex = 0;
 let quesThrew = false;
 
@@ -109,20 +108,22 @@ async function mainRoop(){
     }
   }
 
-  $("#quiz-area").text("全てのクイズが終了しました");
+  $("#display-ans").text("全てのクイズが終了しました");
 };
 
 mainRoop();
+let counter = 0;
 
 // 出題部分
 const syutudai = () => {
   return new Promise(resolve => {
     $("#quiz-area").text('');
+    $("#display-ans").text('');
     $("#ans-area").text('');
     $("#user-input-text").text('');
     $("#answer-limit").text('');
     let content = [];
-    let counter = 0;
+    counter = 0;
     $("#cor-rate").text(Questions[rank][quizIndex].Correct_rate + "%");
 
     // 問題文を配列に代入
@@ -168,21 +169,19 @@ const syutudai = () => {
       })
     }, 100);
 
-    // 問題が全部読まれた後time秒待つ
-    if(counter === 10) {
-      clearInterval(intervalId);
-      $("#countdown-bar").animate({width: "0%"}, time, function() {
-        $(this).css({width: "100%"});
-        resolve();
-      });
-    }
   })
 }
 
+// 答えを描画
 function drawAnswer() {
   const nowAnswer = Questions[rank][quizIndex].Content.Answer;
   const nowAnswerYomi = Questions[rank][quizIndex].Content.Yomi;
-  $("#quiz-area").text("A. " + nowAnswer + "  (" + nowAnswerYomi + ")");
+  const nowQues = Questions[rank][quizIndex].Content.Question;
+
+  if(counter !== nowQues.length) {
+    $("#quiz-area").text(nowQues);
+  }
+  $("#display-ans").text("A. " + nowAnswer + "  (" + nowAnswerYomi + ")");
 
 }
 
@@ -273,7 +272,7 @@ function createAnswser(nowAnswerYomiEach){
     randomAnswer.shuffle();
     randomAnswer.forEach((val) => {
       $("<div>", {
-        class: 'card text-center mx-1 justify-content-center',
+        class: 'text-box',
         'data-text': val,
         text: val
       }).appendTo('#ans-area');
@@ -304,12 +303,12 @@ function inputAnswer(nowAnswerYomiEach) {
   }, time + 5000);
 
   // 選択肢クリック処理
-  $('.card').on("click", async function() {
+  $('.text-box').on("click", async function() {
     clearInterval(interval);
     let answer = $(this).data('text');
     userAnswer.push(answer);
     $("#user-input-text").text(userAnswer.join(""));
-    $(".card").remove(); 
+    $(".text-box").remove(); 
     if(userAnswer.length  === nowAnswerYomiEach.length || userAnswer[ansCount] !== nowAnswerYomiEach[ansCount]) await sleep(500);
     ansCount++;
     resolve();
