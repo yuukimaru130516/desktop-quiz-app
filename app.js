@@ -11,7 +11,6 @@ const roomRouter = require('./routes/room');
 const quizRouter = require('./routes/quiz');
 
 
-
 var app = express();
 app.use(helmet());
 
@@ -29,6 +28,8 @@ app.use('/', indexRouter);
 app.use('/quiz-api', quizAPIRouter); //API
 app.use('/room', roomRouter);
 app.use('/quiz', quizRouter);
+
+
 
 
 // catch 404 and forward to error handler

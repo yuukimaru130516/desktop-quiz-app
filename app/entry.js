@@ -325,3 +325,13 @@ function sleep(ms) {
 }
 
 
+// Socket.ioサーバへ接続
+/* import { io } from 'socket.io-client';
+const socket = io('http://localhost:8000');
+ */
+/* socket.on('connect-user', (data) => {
+  console.log(data);
+}) */
+
+
+

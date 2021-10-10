@@ -88,3 +88,14 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+
+// Socket.io
+const io = require('socket.io')(server);
+//const socket = require('socket.io-client/lib/socket');
+
+io.on("connection", socket => {
+  console.log("ユーザーが接続しました");
+  socket.emit("connect-user", "ユーザーが接続しました");
+  });
+

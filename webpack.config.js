@@ -1,4 +1,5 @@
 module.exports = {
+    node: {global: true},
     context: __dirname + '/app',
     entry: ['@babel/polyfill', './entry.js'],
     output: {
